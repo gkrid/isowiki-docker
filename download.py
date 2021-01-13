@@ -115,9 +115,9 @@ for plugin, url in manual_plugins.items():
     download_plugin(plugin, url)
 
 # fill with default configuration
-engine_conf = os.path.join(engine_filepath, 'conf/')
-command = f"cp engine_config.local/* {engine_conf}"
-subprocess.run(command, shell=True)
+# engine_conf = os.path.join(engine_filepath, 'conf/')
+# command = f"cp engine_config.local/* {engine_conf}"
+# subprocess.run(command, shell=True)
 
 command = f"cp .htaccess {engine_filepath}"
 subprocess.run(command, shell=True)
