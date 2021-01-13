@@ -1,2 +1,0 @@
-ALTER TABLE thread_participant ADD COLUMN removed BOOLEAN NOT NULL DEFAULT 0;
-ALTER TABLE task_participant ADD COLUMN removed BOOLEAN NOT NULL DEFAULT 0;

@@ -1,3 +1,0 @@
-====== An included link to Bob Ross ======
-
-So [[:bob_ross_says|Bob Ross says this (include namespace)]].
