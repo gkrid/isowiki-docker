@@ -54,9 +54,9 @@ print(f"Creating new engine: {engine_filename}")
 command = f"tar -zxf {archive_filepath} -C {engines_dir} && mv {dw_filepath} {engine_filepath} && rm {archive_filepath}"
 subprocess.run(command, shell=True)
 
-latest_sym_link = os.path.join(engines_dir, "latest")
-command = f"rm {latest_sym_link} ; ln -s {engine_filename} {latest_sym_link}"
-subprocess.run(command, shell=True)
+# latest_sym_link = os.path.join(engines_dir, "latest")
+# command = f"rm {latest_sym_link} ; ln -s {engine_filename} {latest_sym_link}"
+# subprocess.run(command, shell=True)
 
 
 EXTENSION_REPOSITORY_API = 'http://www.dokuwiki.org/lib/plugins/pluginrepo/api.php'

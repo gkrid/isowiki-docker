@@ -1,0 +1,7 @@
+base alphalist2
+author Szymon Olewniczak
+email it@rid.pl
+date 2019-08-02
+name alphalist2
+desc Display ordered and unorderd lists in alphabetical order
+url https://www.dokuwiki.org/plugin:alphalist2

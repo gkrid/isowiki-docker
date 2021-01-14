@@ -1,14 +1,21 @@
 FROM php:7.4-apache
 MAINTAINER Grupa Konsultingowa RID <it@rid.pl>
+
+ENV DOKUWIKI_VERSION 2020-07-29.000
+
 ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && install-php-extensions gd xdebug
-COPY core_engines/latest /var/www/html
-RUN chown -R www-data:www-data /var/www/html
 
 # Install cron
-RUN apt-get update && apt-get install -y tzdata cron
+RUN apt-get update && apt-get install -y --no-install-recommends tzdata cron
 RUN cp /usr/share/zoneinfo/Europe/Warsaw /etc/localtime && echo "Europe/Warsaw" > /etc/timezone
-# RUN rm -rf /var/cache/apk/*
+
+# Enable mod rewrite
+RUN a2enmod rewrite
+
+# Copy files
+COPY core_engines/dokuwiki-${DOKUWIKI_VERSION} /var/www/html
+RUN chown -R www-data:www-data /var/www/html
 
 # Copy cron file to the cron.d directory
 COPY cron /etc/cron.d/cron
@@ -19,11 +26,8 @@ RUN chmod 0644 /etc/cron.d/cron
 # Apply cron job
 RUN crontab /etc/cron.d/cron
 
-# Add a command to base-image entrypont script
-RUN sed -i 's/^exec /service cron start\n\nexec /' /usr/local/bin/apache2-foreground
+# COPY CMD
+COPY isowiki-cmd /usr/local/bin
+RUN chmod +x /usr/local/bin/isowiki-cmd
 
-# Enable mod rewrite
-RUN a2enmod rewrite
-
-# Use the default production configuration
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+CMD ["isowiki-cmd"]

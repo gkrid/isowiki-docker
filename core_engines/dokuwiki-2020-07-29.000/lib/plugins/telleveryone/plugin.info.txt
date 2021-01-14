@@ -1,0 +1,7 @@
+base   telleveryone
+author Szymon Olewniczak
+email  it@rid.pl
+date   2020-05-27
+name   telleveryone plugin
+desc   Allow dokuwiki admins to publish short messages to other users.
+url    https://dokuwiki.org/plugin:telleveryone

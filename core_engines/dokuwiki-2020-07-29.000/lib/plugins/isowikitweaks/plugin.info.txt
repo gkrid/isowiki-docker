@@ -1,0 +1,7 @@
+base isowikitweaks
+author Szymon Olewniczak
+email it@rid.pl
+date 2019-11-14
+name isowikitweaks
+desc Some isowiki enhacements
+url
