@@ -1,0 +1,7 @@
+base   structrowcolor
+author Szymon Olewniczak
+email  it@rid.pl
+date   2020-07-29
+name   structrowcolor plugin
+desc   Color struct table rows.
+url    https://dokuwiki.org/plugin:structrowcolor

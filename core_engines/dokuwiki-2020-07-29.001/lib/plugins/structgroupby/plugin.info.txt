@@ -1,0 +1,7 @@
+base   structgroupby
+author Szymon Olewniczak
+email  it@rid.pl
+date   2021-01-14
+name   structgroupby plugin
+desc   Groups rows that have the same values into summary rows
+url    https://www.dokuwiki.org/plugin:structgroupby

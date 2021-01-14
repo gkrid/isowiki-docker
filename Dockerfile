@@ -1,7 +1,7 @@
 FROM php:7.4-apache
 MAINTAINER Grupa Konsultingowa RID <it@rid.pl>
 
-ENV DOKUWIKI_VERSION 2020-07-29.000
+ENV DOKUWIKI_VERSION 2020-07-29.001
 
 ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && install-php-extensions gd xdebug
