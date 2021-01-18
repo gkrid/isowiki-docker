@@ -18,8 +18,8 @@ manual_plugins = {'isowikitweaks': 'https://github.com/gkrid/dokuwiki-plugin-iso
                   'redirect': 'https://github.com/gkrid/dokuwiki-plugin-redirect/archive/master.zip',
                   'simplenavi': 'https://github.com/solewniczak/simplenavi/archive/skipns.zip'}
 
-if not os.path.isdir('./engine_config.local'):
-    shutil.copytree('./engine_config', './engine_config.local')
+# if not os.path.isdir('./engine_config.local'):
+#     shutil.copytree('./engine_config', './engine_config.local')
 
 engines_dir = './core_engines'
 
@@ -64,6 +64,57 @@ all_extensions = json.load(urllib.request.urlopen(EXTENSION_REPOSITORY_API))
 extensions_dict = {extension['plugin']: extension for extension in all_extensions}
 extensions_dir = os.path.join(engine_filepath, 'lib/plugins')
 
+def get_plugin_version(info_file):
+    with open(info_file) as fp:
+        for line in fp:
+            key, value = line.strip().split(maxsplit=1)
+            if key == 'date':
+                return value
+
+def get_plugin_db_version(plugin_path):
+    db_version_path = os.path.join(plugin_path, 'db/latest.version')
+    if os.path.isfile(db_version_path):
+        with open(db_version_path, 'r') as file:
+            version = file.read().strip()
+            return version
+    return False
+
+def compare_plugins_versions(name):
+    ''' Check if plugin version changed between releases.
+    Additionaly check if database update for sqlite plugins. '''
+    if len(engines) == 0:
+        print('ok')
+        return
+
+    previous_engine_filepath = os.path.join(engines_dir, last_engine)
+    previous_extensions_dir = os.path.join(previous_engine_filepath, 'lib/plugins')
+
+    new_plugin_filepath = os.path.join(extensions_dir, name)
+    old_plugin_filepath = os.path.join(previous_extensions_dir, name)
+
+    new_plugin_info = os.path.join(new_plugin_filepath, 'plugin.info.txt')
+    old_plugin_info = os.path.join(old_plugin_filepath, 'plugin.info.txt')
+
+    if not os.path.isfile(old_plugin_info):
+        print('installing new plugin')
+    else:
+        new_plugin_version = get_plugin_version(new_plugin_info)
+        old_plugin_version = get_plugin_version(old_plugin_info)
+        if new_plugin_version != old_plugin_version:
+            print(f'upgrading from {old_plugin_version} to {new_plugin_version}', end='')
+            # check if plugin updates database
+            new_plugin_db_version = get_plugin_db_version(new_plugin_filepath)
+            old_plugin_db_version = get_plugin_db_version(old_plugin_filepath)
+            if new_plugin_db_version != False and old_plugin_db_version != False:
+                if new_plugin_db_version != old_plugin_db_version:
+                    print(f". upgrading plugin's db from {old_plugin_db_version} to {new_plugin_db_version}")
+                else:
+                    print('. no db upgrades')
+            else:
+                print()
+        else:
+            print('no upgrades')
+
 # download plugins
 def download_plugin(name, download_url=''):
     if download_url == '':
@@ -105,7 +156,7 @@ def download_plugin(name, download_url=''):
     command = command_extract.format(archive=extension_archive_filepath, destination=extensions_dir)+\
               f" && mv {extension_maindir_filepath} {extension_newdir_filepath} && rm {extension_archive_filepath}"
     subprocess.run(command, shell=True, stdout=subprocess.DEVNULL)
-    print('ok')
+    compare_plugins_versions(name)
 
 
 for plugin in default_plugins:
@@ -115,9 +166,9 @@ for plugin, url in manual_plugins.items():
     download_plugin(plugin, url)
 
 # fill with default configuration
-# engine_conf = os.path.join(engine_filepath, 'conf/')
-# command = f"cp engine_config.local/* {engine_conf}"
-# subprocess.run(command, shell=True)
+engine_conf = os.path.join(engine_filepath, 'conf/')
+command = f"cp default_conf/* {engine_conf}"
+subprocess.run(command, shell=True)
 
 command = f"cp .htaccess {engine_filepath}"
 subprocess.run(command, shell=True)
