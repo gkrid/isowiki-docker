@@ -1,0 +1,8 @@
+.isowikitweaks-table-no-border-horizontal td {
+	border-top: 0;
+	border-bottom: 0;
+}
+
+.isowikitweaks-table-border-hide-empty td {
+	border-bottom: 0;
+}
