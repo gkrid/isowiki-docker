@@ -1,3 +1,0 @@
-<?php
-
-$meta['bottomoutput'] = ['onoff'];

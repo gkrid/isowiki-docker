@@ -1,4 +1,0 @@
-====== An excluded link to Bob Ross ======
-
-So [[:bob_ross_says|Bob Ross says this (exclude namespace)]].
-

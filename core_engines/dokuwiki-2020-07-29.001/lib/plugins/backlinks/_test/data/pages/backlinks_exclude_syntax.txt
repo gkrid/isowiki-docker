@@ -1,4 +1,0 @@
-====== Backlinks to what Bob Ross says (excluding exclude namespace)======
-
-{{backlinks>bob_ross_says#!exclude}}
-

@@ -1,7 +1,5 @@
 engine_config.local/
+core_engines/
 .idea/
 venv
 __pycache__
-cmd_animal/__pycache__
-config.local.yml
-docker-compose.yml

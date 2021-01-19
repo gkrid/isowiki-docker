@@ -1,8 +1,4 @@
 venv/
-files/
+core_engines/
 README.md
 .gitignore
-
-dokuwiki-2020-07-29.000
-dokuwiki-2020-07-29.001
-dokuwiki-2020-07-29.002

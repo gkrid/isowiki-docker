@@ -1,7 +1,0 @@
-base   structat
-author Szymon Olewniczak
-email  it@rid.pl
-date   2020-07-18
-name   structat plugin
-desc   Struct table page aggregator with additional at parameter.
-url    https://dokuwiki.org/plugin:structat

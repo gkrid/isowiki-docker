@@ -1,3 +1,0 @@
-====== Advanced: Import Utility ======
-
-Use this page to import (or deploy) DokuWiki pages exported with [[this>?do=admin&page=advanced_export|Export Utility]].

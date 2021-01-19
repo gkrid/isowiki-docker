@@ -1,1 +1,0 @@
-/* DOKUWIKI:include lib/bundle.js */

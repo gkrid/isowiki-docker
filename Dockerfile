@@ -1,8 +1,6 @@
 FROM php:7.4-apache
 MAINTAINER Grupa Konsultingowa RID <it@rid.pl>
 
-ENV DOKUWIKI_VERSION 2020-07-29.003
-
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
@@ -17,7 +15,7 @@ RUN cp /usr/share/zoneinfo/Europe/Warsaw /etc/localtime && echo "Europe/Warsaw" 
 RUN a2enmod rewrite
 
 # Copy files
-COPY core_engines/dokuwiki-${DOKUWIKI_VERSION} /opt/isowiki
+COPY dokuwiki /opt/isowiki
 # RUN chown -R www-data:www-data /var/www/html
 
 # Copy cron file to the cron.d directory
