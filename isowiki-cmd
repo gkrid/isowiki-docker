@@ -53,6 +53,12 @@ else
   rm "$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini"
 fi
 
+# After selecting mode set timezone
+cat >"$PHP_INI_DIR/conf.d/tzone.ini" <<EOL
+[PHP]
+date.timezone = "Europe/Warsaw"
+EOL
+
 echo "** IsoWiki initialized **"
 
 service cron start
