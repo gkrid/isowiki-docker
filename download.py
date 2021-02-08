@@ -21,7 +21,7 @@ manual_plugins = {'isowikitweaks': 'https://github.com/gkrid/dokuwiki-plugin-iso
 # if not os.path.isdir('./engine_config.local'):
 #     shutil.copytree('./engine_config', './engine_config.local')
 
-engines_dir = './core_engines'
+engines_dir = './'
 
 # current_dir = sys.path[0]
 # engines_dir = os.path.join(current_dir, "core_engines")
@@ -34,24 +34,9 @@ dokuwiki_path = os.path.join(engines_dir, "dokuwiki-stable.tgz")
 command = f"tar -ztf {dokuwiki_path}|head -n1"
 proc = subprocess.run(command, shell=True, stdout=subprocess.PIPE)
 dw_version = proc.stdout.decode("utf-8").strip().rstrip('/')
-dw_filepath = os.path.join(engines_dir, dw_version)
+engine_filepath = os.path.join(engines_dir, dw_version)
 
-engines = glob.glob(os.path.join(engines_dir, dw_version + '.*'))
-engines = [os.path.basename(engine_path) for engine_path in engines]
-
-if len(engines) == 0:
-    engine_build = 0
-else:
-    last_engine = max(engines)
-    last_engine_split = last_engine.split('.')
-    last_engine_build = last_engine_split[1]
-    engine_build = int(last_engine_build) + 1
-
-engine_filename= f"{dw_version}.{engine_build:03}"
-engine_filepath = os.path.join(engines_dir, engine_filename)
-print(f"Creating new engine: {engine_filename}")
-
-command = f"tar -zxf {archive_filepath} -C {engines_dir} && mv {dw_filepath} {engine_filepath} && rm {archive_filepath}"
+command = f"tar -zxf {archive_filepath} -C {engines_dir} && rm {archive_filepath}"
 subprocess.run(command, shell=True)
 
 # latest_sym_link = os.path.join(engines_dir, "latest")
@@ -63,6 +48,24 @@ EXTENSION_REPOSITORY_API = 'http://www.dokuwiki.org/lib/plugins/pluginrepo/api.p
 all_extensions = json.load(urllib.request.urlopen(EXTENSION_REPOSITORY_API))
 extensions_dict = {extension['plugin']: extension for extension in all_extensions}
 extensions_dir = os.path.join(engine_filepath, 'lib/plugins')
+
+# Check main dokuwiki versions
+previous_engine_filepath = os.path.join(engines_dir, 'dokuwiki')
+previous_engine_version_filepath = os.path.join(previous_engine_filepath, 'VERSION')
+
+if os.path.isfile(previous_engine_version_filepath):
+    with open(previous_engine_version_filepath, 'r') as file:
+        prev_version = file.read().replace('\n', '')
+    current_engine_version_filepath = os.path.join(engine_filepath, 'VERSION')
+    with open(current_engine_version_filepath, 'r') as file:
+        current_version = file.read().replace('\n', '')
+    if prev_version == current_version:
+        print(f"Engine version didn't change: {prev_version}")
+    else:
+        print(f"Upgrading engine from {prev_version} to {current_version}")
+else:
+    print("No previous engine found.")
+
 
 def get_plugin_version(info_file):
     with open(info_file) as fp:
@@ -82,13 +85,11 @@ def get_plugin_db_version(plugin_path):
 def compare_plugins_versions(name):
     ''' Check if plugin version changed between releases.
     Additionaly check if database update for sqlite plugins. '''
-    if len(engines) == 0:
+    if not os.path.isfile(previous_engine_version_filepath):
         print('ok')
         return
 
-    previous_engine_filepath = os.path.join(engines_dir, last_engine)
     previous_extensions_dir = os.path.join(previous_engine_filepath, 'lib/plugins')
-
     new_plugin_filepath = os.path.join(extensions_dir, name)
     old_plugin_filepath = os.path.join(previous_extensions_dir, name)
 
@@ -171,4 +172,7 @@ command = f"cp default_conf/* {engine_conf}"
 subprocess.run(command, shell=True)
 
 command = f"cp .htaccess {engine_filepath}"
+subprocess.run(command, shell=True)
+
+command = f"rm -r {previous_engine_filepath} && mv {engine_filepath} {previous_engine_filepath}"
 subprocess.run(command, shell=True)

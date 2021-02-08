@@ -4,6 +4,9 @@ export ISOWIKI_ROOT_DIR="/opt/isowiki"
 export ISOWIKI_VOLUME_DIR="/isowiki"
 export APACHE_SERVER_ROOT="/var/www/html"
 
+PERSIST="${PERSIST:-1}"
+DEBUG="${DEBUG:-0}"
+
 echo "** Initializing IsoWiki **"
 
 # Copy isowiki files to server configuration
@@ -23,22 +26,26 @@ restore_persisted_isowiki () {
   ln -s $ISOWIKI_VOLUME_DIR/conf $APACHE_SERVER_ROOT/conf
 }
 
-if [ "$(ls -A $ISOWIKI_VOLUME_DIR)" ]; then
-  echo "Restoring persisted IsoWiki installation"
-  restore_persisted_isowiki
+if [ "$PERSIST" = 1 ]; then
+  if [ "$(ls -A $ISOWIKI_VOLUME_DIR)" ]; then
+    echo "Restoring persisted IsoWiki installation"
+    restore_persisted_isowiki
 
+  else
+    echo "Persisting IsoWiki installation"
+    cp -a $ISOWIKI_ROOT_DIR/data $ISOWIKI_VOLUME_DIR/data
+    chown -R www-data:www-data $ISOWIKI_VOLUME_DIR/data
+
+    cp -a $ISOWIKI_ROOT_DIR/conf $ISOWIKI_VOLUME_DIR/conf
+    chown -R www-data:www-data $ISOWIKI_VOLUME_DIR/conf
+
+    restore_persisted_isowiki
+  fi
 else
-  echo "Persisting IsoWiki installation"
-  cp -a $ISOWIKI_ROOT_DIR/data $ISOWIKI_VOLUME_DIR/data
-  chown -R www-data:www-data $ISOWIKI_VOLUME_DIR/data
-
-  cp -a $ISOWIKI_ROOT_DIR/conf $ISOWIKI_VOLUME_DIR/conf
-  chown -R www-data:www-data $ISOWIKI_VOLUME_DIR/conf
-
-  restore_persisted_isowiki
+  echo "PERSIST=0. The data will be dropped with container."
 fi
 
-if [ "$DEBUG" = true ]; then
+if [ "$DEBUG" = 1 ]; then
   echo "Debug mode"
   cp "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
   cat >"$PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini" <<EOL
