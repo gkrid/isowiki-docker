@@ -6,7 +6,7 @@ import os
 import subprocess
 import glob
 
-default_plugins = ['advanced', 'alphalist2', 'approve', 'backlinks', 'bez', 'bureaucracy', 'button', 'discussion',
+default_plugins = ['advanced', 'alphalist2', 'approve', 'backlinks', 'bez', 'bureaucracy', 'button', 'cellbg', 'discussion',
                    'dropfiles', 'edittable', 'filelisting', 'flowcharts', 'folded', 'fontcolor', 'googledrawing',
                    'icons', 'iframe', 'include', 'indexmenu', 'ireadit', 'move', 'nosidebar', 'notification',
                    'numberof', 'pagemod', 'pdfjs', 'smtp', 'sqlite', 'struct', 'structat', 'structcombolookup',
