@@ -10,7 +10,7 @@ default_plugins = ['advanced', 'alphalist2', 'approve', 'backlinks', 'bez', 'bur
                    'dropfiles', 'edittable', 'filelisting', 'flowcharts', 'folded', 'fontcolor', 'googledrawing',
                    'icons', 'iframe', 'include', 'indexmenu', 'ireadit', 'move', 'nosidebar', 'notification',
                    'numberof', 'pagemod', 'pdfjs', 'smtp', 'sqlite', 'struct', 'structat', 'structcombolookup',
-                   'structgantt', 'structgroup', 'structgroupby', 'structinputstretch', 'structjoin', 'structnotification', 'structodt',
+                   'structgroup', 'structgroupby', 'structinputstretch', 'structjoin', 'structnotification', 'structodt',
                    'structrowcolor', 'structstatus', 'subnumberlist', 'tablecalc', 'tablelayout',
                    'telleveryone', 'templatepagename', 'toctweak', 'translation', 'wrap']
 
