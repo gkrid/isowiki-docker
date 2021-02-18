@@ -11,7 +11,7 @@ default_plugins = ['advanced', 'alphalist2', 'approve', 'backlinks', 'bez', 'bur
                    'icons', 'iframe', 'include', 'indexmenu', 'ireadit', 'move', 'nosidebar', 'notification',
                    'numberof', 'pagemod', 'pdfjs', 'smtp', 'sqlite', 'struct', 'structat', 'structcombolookup',
                    'structgroup', 'structgroupby', 'structinputstretch', 'structjoin', 'structnotification', 'structodt',
-                   'structrowcolor', 'structstatus', 'subnumberlist', 'tablecalc', 'tablelayout',
+                   'structrowcolor', 'structstatus', 'structupdate', 'subnumberlist', 'tablecalc', 'tablelayout',
                    'telleveryone', 'templatepagename', 'toctweak', 'translation', 'wrap']
 
 manual_plugins = {'isowikitweaks': 'https://github.com/gkrid/dokuwiki-plugin-isowikitweaks/archive/master.zip',
