@@ -68,7 +68,7 @@ class helper_plugin_structupdate_update extends helper_plugin_bureaucracy_action
 
                 $schemadata = [];
                 foreach($tables as $table) {
-                    $schema = AccessTable::byTableName($table, $page);
+                    $schema = AccessTable::getPageAccess($table, $page);
                     if(!$schema->getSchema()->isEditable()) {
                         throw new Exception("Schema $table is not editable");
                     }
@@ -84,8 +84,6 @@ class helper_plugin_structupdate_update extends helper_plugin_bureaucracy_action
                     }
                 }
                 $helper->saveData($page, $schemadata);
-            } else {
-                throw new Exception('Update for lookups not implemented yet.');
             }
         } catch(Exception $e) {
             msg($e->getMessage(), -1);
