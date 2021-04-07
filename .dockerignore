@@ -2,3 +2,4 @@ venv/
 core_engines/
 README.md
 .gitignore
+.idea
