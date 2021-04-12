@@ -1,5 +1,32 @@
 #!/bin/bash
 
+apply_default_config() {
+  dokuwiki_original_conf=$ISOWIKI_ROOT_DIR/conf/dokuwiki.php
+  dokuwiki_local_conf=$APACHE_SERVER_ROOT/conf/dokuwiki.php
+
+  echo cp "$dokuwiki_original_conf" "$dokuwiki_local_conf"
+  cp "$dokuwiki_original_conf" "$dokuwiki_local_conf"
+
+  # https://stackoverflow.com/questions/1527049/how-can-i-join-elements-of-an-array-in-bash
+  function join_by { local IFS="$1"; shift; echo "$*"; }
+
+  IFS=$'\n'
+  for var in $(printenv|grep '^DOKUWIKI_'); do
+    var_name="${var%%=*}"
+    IFS="_" read -a parts <<< $var_name
+    if [ "${parts[1]}" = "PLUGIN" ]; then
+      plugin_name=$(echo "${parts[2]}" | tr '[:upper:]' '[:lower:]')
+      plugin_key=$(join_by _ "${parts[@]:3}" | tr '[:upper:]' '[:lower:]')
+      echo "\$conf['plugin']['$plugin_name']['$plugin_key'] = '${!var_name}';"
+      echo "\$conf['plugin']['$plugin_name']['$plugin_key'] = '${!var_name}';" >> "$dokuwiki_local_conf"
+    else
+      config_key=$(join_by _ "${parts[@]:1}" | tr '[:upper:]' '[:lower:]')
+      echo "\$conf['$config_key'] = '${!var_name}';"
+      echo "\$conf['$config_key'] = '${!var_name}';" >> "$dokuwiki_local_conf"
+    fi
+  done
+}
+
 export ISOWIKI_ROOT_DIR="/opt/isowiki"
 export ISOWIKI_VOLUME_DIR="/isowiki"
 export APACHE_SERVER_ROOT="/var/www/html"
@@ -67,6 +94,10 @@ date.timezone = "Europe/Warsaw"
 EOL
 
 echo "** IsoWiki initialized **"
+
+echo "** Applying global conf **"
+apply_default_config
+echo "** Global conf applied **"
 
 service cron start
 apache2-foreground
