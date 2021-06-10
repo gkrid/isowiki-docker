@@ -28,8 +28,8 @@ class general_plugin_backlinks_test extends DokuWikiTest {
     /**
      * Simple test to make sure the plugin.info.txt is in correct format
      */
-    public function test_plugininfo() {
-        $file = __DIR__.'/../plugin.info.txt';
+    public function test_plugininfo(): void {
+        $file = __DIR__ . '/../plugin.info.txt';
         $this->assertFileExists($file);
 
         $info = confToHash($file);
@@ -52,11 +52,10 @@ class general_plugin_backlinks_test extends DokuWikiTest {
     /**
      * test if plugin is loaded.
      */
-    public function test_plugin_backlinks_isloaded() {
+    public function test_plugin_backlinks_isloaded(): void {
         global $plugin_controller;
-        $this->assertTrue(
-                          in_array('backlinks', $plugin_controller->getList()),
-                          "backlinks plugin is loaded"
-                         );
+        $this->assertContains(
+            'backlinks', $plugin_controller->getList(), "backlinks plugin is loaded"
+        );
     }
 }
