@@ -98,6 +98,7 @@ class admin_plugin_sqlite extends DokuWiki_Admin_Plugin {
     function html() {
         global $ID;
         global $conf;
+        global $INPUT;
 
         echo $this->locale_xhtml('intro');
 
@@ -206,7 +207,35 @@ class admin_plugin_sqlite extends DokuWiki_Admin_Plugin {
                 echo '<li>' . $form->toHTML() . '</li>';
                 echo '</ul>';
 
-                $form = new Doku_Form(array('class'=> 'sqliteplugin'));
+                /** @var $helper helper_plugin_sqlite */
+                $sqlite_db = plugin_load('helper', 'sqlite');
+                $sqlite_db->init('sqlite', DOKU_PLUGIN . 'sqlite/db/');
+
+                if($INPUT->str('action') == 'save') {
+                    $ok = true;
+                    if(empty($INPUT->str('sql'))) {
+                        msg($this->getLang('validation query_required'), -1);
+                        $ok = false;
+                    }
+                    if(empty($INPUT->str('name'))) {
+                        msg($this->getLang('validation query_name_required'), -1);
+                        $ok = false;
+                    }
+
+                    if($ok) {
+                        $sqlite_db->storeEntry('queries', array(
+                            'db' => $_REQUEST['db'],
+                            'name' => $INPUT->str('name'),
+                            'sql' => $INPUT->str('sql')
+                        ));
+                        msg($this->getLang('success query_saved'), 1);
+                    }
+                } elseif($INPUT->str('action') == 'delete') {
+                    $sqlite_db->query("DELETE FROM queries WHERE id=?;", $INPUT->int('query_id'));
+                    msg($this->getLang('success query_deleted'), 1);
+                }
+
+                $form = new Doku_Form(array('class'=> 'sqliteplugin', 'action' => wl($ID, '', true, '&')));
                 $form->startFieldset('SQL Command');
                 $form->addHidden('id', $ID);
                 $form->addHidden('do', 'admin');
@@ -214,14 +243,54 @@ class admin_plugin_sqlite extends DokuWiki_Admin_Plugin {
                 $form->addHidden('db', $_REQUEST['db']);
                 $form->addHidden('version', $_REQUEST['version']);
                 $form->addElement('<textarea name="sql" class="edit">'.hsc($_REQUEST['sql']).'</textarea>');
-                $form->addElement('<input type="submit" class="button" />');
+                $form->addElement('<input type="submit" class="button" /> ');
+                $form->addElement('<label>'.$this->getLang('query_name').': <input type="text" name="name" /></label> ');
+                $form->addElement('<button name="action" value="save">'.$this->getLang('save_query').'</button>');
                 $form->endFieldset();
                 $form->printForm();
+
+                // List saved queries
+                $res = $sqlite_db->query("SELECT id, name, sql FROM queries WHERE db=?", $_REQUEST['db']);
+                $result = $sqlite_db->res2arr($res);
+                if(count($result) > 0) {
+                    echo '<h3>' . $this->getLang('saved_queries') . '</h3>';
+                    echo '<div>';
+                    echo '<table class="inline">';
+                    echo '<tr>';
+                    echo '<th>name</th>';
+                    echo '<th>sql</th>';
+                    echo '<th></th>';
+                    echo '</tr>';
+                    foreach($result as $row) {
+                        echo '<tr>';
+                        echo '<td>'.hsc($row['name']).'</td>';
+                        $link = wl($ID, array(  'do'=> 'admin',
+                                                'page'=> 'sqlite',
+                                                'db'=> $_REQUEST['db'],
+                                                'version'=> $_REQUEST['version'],
+                                                'sql' => $row['sql'],
+                                                'sectok'=> getSecurityToken()));
+                        echo '<td><a href="'.$link.'">'.hsc($row['sql']).'</a></td>';
+
+                        $link = wl($ID, array(  'do'=> 'admin',
+                            'page'=> 'sqlite',
+                            'db'=> $_REQUEST['db'],
+                            'version'=> $_REQUEST['version'],
+                            'action' => 'delete',
+                            'query_id' => $row['id'],
+                            'sectok'=> getSecurityToken()));
+                        echo '<td><a href="'.$link.'">delete</a></td>';
+                        echo '</tr>';
+                    }
+                    echo '</table>';
+                    echo '</div>';
+                }
 
                 if($_REQUEST['sql']) {
 
                     if(!$DBI->init($_REQUEST['db'], '')) return;
 
+                    print '<h3>Query results</h3>';
                     $sql = $DBI->SQLstring2array($_REQUEST['sql']);
                     foreach($sql as $s) {
                         $s = preg_replace('!^\s*--.*$!m', '', $s);

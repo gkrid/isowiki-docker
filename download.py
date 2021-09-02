@@ -9,7 +9,7 @@ import glob
 default_plugins = ['addnewpage', 'advanced', 'alphalist2', 'approve', 'backlinks', 'bez', 'bureaucracy', 'button', 'cellbg', 'discussion',
                    'dropfiles', 'edittable', 'filelisting', 'flowcharts', 'folded', 'fontcolor', 'googledrawing',
                    'icons', 'iframe', 'indexmenu', 'ireadit', 'move', 'nosidebar', 'notification',
-                   'numberof', 'pagemod', 'pdfjs', 'smtp', 'sqlite', 'struct', 'structat', 'structcombolookup',
+                   'numberof', 'pagemod', 'pdfjs', 'smtp', 'struct', 'structat', 'structcombolookup',
                    'structgroup', 'structgroupby', 'structinputstretch', 'structjoin', 'structnotification', 'structodt',
                    'structrowcolor', 'structstatus', 'structupdate', 'subnumberlist', 'tablecalc', 'tablelayout',
                    'telleveryone', 'templatepagename', 'toctweak', 'translation', 'wrap']
@@ -18,7 +18,8 @@ manual_plugins = {'isowikitweaks': 'https://github.com/gkrid/dokuwiki-plugin-iso
                   'redirect': 'https://github.com/gkrid/dokuwiki-plugin-redirect/archive/master.zip',
                   'simplenavi': 'https://github.com/solewniczak/simplenavi/archive/skipns.zip',
                   'metro4tiles': 'https://github.com/solewniczak/dokuwiki-plugin-metro4tiles/archive/master.zip',
-                  'include': 'https://github.com/gkrid/plugin-include/archive/refs/heads/feature/noinstructionscache-flag.zip'}
+                  'include': 'https://github.com/gkrid/plugin-include/archive/refs/heads/feature/noinstructionscache-flag.zip',
+                  'sqlite': 'https://github.com/gkrid/sqlite/archive/refs/heads/feature-save-sql-queries.zip'}
 
 # if not os.path.isdir('./engine_config.local'):
 #     shutil.copytree('./engine_config', './engine_config.local')
@@ -72,7 +73,10 @@ else:
 def get_plugin_version(info_file):
     with open(info_file) as fp:
         for line in fp:
-            key, value = line.strip().split(maxsplit=1)
+            info = line.strip().split(maxsplit=1)
+            if len(info) < 2:  # check if key value pair exists
+                continue
+            key, value = info
             if key == 'date':
                 return value
 
