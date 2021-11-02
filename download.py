@@ -6,18 +6,16 @@ import os
 import subprocess
 import glob
 
-default_plugins = ['addnewpage', 'advanced', 'alphalist2', 'approve', 'backlinks', 'bez', 'bureaucracy', 'button', 'cellbg', 'discussion',
-                   'dropfiles', 'edittable', 'filelisting', 'flowcharts', 'folded', 'fontcolor', 'googledrawing',
-                   'icons', 'iframe', 'indexmenu', 'ireadit', 'move', 'nosidebar', 'notification',
-                   'numberof', 'pagemod', 'pdfjs', 'smtp', 'struct', 'structat', 'structcombolookup',
-                   'structgroup', 'structgroupby', 'structinputstretch', 'structjoin', 'structnotification', 'structodt',
-                   'structrowcolor', 'structstatus', 'structupdate', 'subnumberlist', 'tablecalc', 'tablelayout',
-                   'telleveryone', 'templatepagename', 'toctweak', 'translation', 'wrap']
+default_plugins = ['addnewpage', 'advanced', 'alphalist2', 'approve', 'bez', 'bureaucracy', 'discussion', 'dropfiles',
+                   'edittable', 'filelisting', 'flowcharts', 'folded', 'fontcolor', 'googledrawing', 'icons', 'iframe',
+                   'indexmenu', 'ireadit', 'move', 'newpagetemplate', 'nosidebar', 'notification', 'numberof',
+                   'pagemod', 'pdfjs', 'smtp', 'struct', 'structcombolookup', 'structgroup', 'structinputstretch',
+                   'structjoin', 'structnotification', 'structodt', 'structrowcolor', 'structupdate', 'subnumberlist',
+                   'svgembed', 'telleveryone', 'translation', 'wrap']
 
 manual_plugins = {'isowikitweaks': 'https://github.com/gkrid/dokuwiki-plugin-isowikitweaks/archive/master.zip',
                   'redirect': 'https://github.com/gkrid/dokuwiki-plugin-redirect/archive/master.zip',
                   'simplenavi': 'https://github.com/solewniczak/simplenavi/archive/skipns.zip',
-                  'metro4tiles': 'https://github.com/solewniczak/dokuwiki-plugin-metro4tiles/archive/master.zip',
                   'include': 'https://github.com/gkrid/plugin-include/archive/refs/heads/feature/noinstructionscache-flag.zip',
                   'sqlite': 'https://github.com/gkrid/sqlite/archive/refs/heads/feature-save-sql-queries.zip'}
 

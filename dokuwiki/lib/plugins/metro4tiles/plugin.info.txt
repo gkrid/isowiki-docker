@@ -1,7 +1,0 @@
-base   metro4tiles
-author Szymon Olewniczak
-email  it@rid.pl
-date   2018-11-28
-name   metro4tiles plugin
-desc   Create tiles such as tiles in Windows 8/10
-url    https://www.dokuwiki.org/plugin:metro4tiles
