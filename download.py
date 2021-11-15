@@ -11,7 +11,7 @@ default_plugins = ['addnewpage', 'advanced', 'alphalist2', 'approve', 'bez', 'bu
                    'indexmenu', 'ireadit', 'move', 'newpagetemplate', 'nosidebar', 'notification', 'numberof',
                    'pagemod', 'pdfjs', 'smtp', 'struct', 'structcombolookup', 'structgroup', 'structinputstretch',
                    'structjoin', 'structnotification', 'structodt', 'structrowcolor', 'structupdate', 'subnumberlist',
-                   'svgembed', 'telleveryone', 'translation', 'wrap']
+                   'svgembed', 'tablelayout', 'telleveryone', 'translation', 'wrap']
 
 manual_plugins = {'isowikitweaks': 'https://github.com/gkrid/dokuwiki-plugin-isowikitweaks/archive/master.zip',
                   'redirect': 'https://github.com/gkrid/dokuwiki-plugin-redirect/archive/master.zip',
