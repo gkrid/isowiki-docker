@@ -6,7 +6,7 @@ import os
 import subprocess
 import glob
 
-default_plugins = ['addnewpage', 'advanced', 'alphalist2', 'approve', 'bez', 'bureaucracy', 'discussion', 'dropfiles',
+default_plugins = ['addnewpage', 'advanced', 'alphalist2', 'approve', 'bez', 'bureaucracy', 'cellbg', 'dropfiles',
                    'edittable', 'filelisting', 'flowcharts', 'folded', 'fontcolor', 'googledrawing', 'icons', 'iframe',
                    'indexmenu', 'ireadit', 'move', 'newpagetemplate', 'nosidebar', 'notification', 'numberof',
                    'pagemod', 'pdfjs', 'smtp', 'struct', 'structcombolookup', 'structgroup', 'structinputstretch',
